@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-class ViendoNoticia extends StatelessWidget {
+class ViendoNoticia22 extends StatelessWidget {
   final String url, titulo;
-  ViendoNoticia({this.url, this.titulo});
+  ViendoNoticia22({this.url, this.titulo});
 
   @override
   Widget build(BuildContext context) {

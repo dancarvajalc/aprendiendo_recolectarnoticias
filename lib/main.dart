@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ViendoNoticia(url: snapshot.data[index].url.toString(),titulo: snapshot.data[index].titulo),
+                                      builder: (context) => ViendoNoticia22(url: snapshot.data[index].url.toString(),titulo: snapshot.data[index].titulo),
                                       fullscreenDialog: true));
                             },
                             child: Image.network(
