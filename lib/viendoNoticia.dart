@@ -14,6 +14,7 @@ class ViendoNoticia22 extends StatelessWidget {
       appBar: AppBar(title: Text(titulo)),
       hidden: true,
       withZoom: true,
+      scrollBar: true,
 
    
     );

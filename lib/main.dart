@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'listadeNoticias.dart';
 import 'package:flutter/material.dart';
 import 'viendoNoticia.dart';
@@ -26,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isLoading = true;
 
   validar() {
+   
     setState(() {
       isLoading = !isLoading;
     });
@@ -37,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //margin: EdgeInsets.all(10),
         child: Scaffold(
       bottomNavigationBar:
-          RaisedButton(child: Text("Obtener noticias"), onPressed: validar),
+          CupertinoButton(child: Text("Obtener"), onPressed:validar,color: Colors.blue,),
       appBar: AppBar(
         title: Text("Noticias"),
       ),
@@ -49,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
                   return Container(
-                      child: Center(child: CircularProgressIndicator()));
+                      child: Center(child: CupertinoActivityIndicator()));
                 } else {
                   return ListView.builder(
                     itemCount: snapshot.data.length,
