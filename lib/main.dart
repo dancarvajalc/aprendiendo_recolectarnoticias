@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           backgroundColor: CupertinoColors.lightBackgroundGray,
@@ -180,6 +181,8 @@ class _UInoticia2State extends State<UInoticia2> {
                                               fullscreenDialog: true));
                                     },
                                     child: FadeInImage.memoryNetwork(
+                                      height: 50,
+                                      width: 50,
                                       placeholder: kTransparentImage,
                                       image: snapshot.data[index].imagen,
                                     )),
