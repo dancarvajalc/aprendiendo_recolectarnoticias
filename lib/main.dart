@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
+import 'package:transparent_image/transparent_image.dart';
 import 'listadeNoticias.dart';
 import 'package:flutter/material.dart';
 import 'viendoNoticia.dart';
@@ -25,20 +25,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: CupertinoTabScaffold(
+      body: CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           backgroundColor: CupertinoColors.lightBackgroundGray,
           items: [
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.home),
-              title: Text('Home'),
+              title: Text('Bienvenida'),
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.conversation_bubble),
-              title: Text('Chat'),
+              title: Text('Noticias'),
             ),
           ],
         ),
@@ -47,9 +47,6 @@ class _HomeState extends State<Home> {
             builder: (context) {
               switch (index) {
                 case 0:
-                  return Bienvenida();
-                  break;
-                case 1:
                   return UInoticia2();
                   break;
                 default:
@@ -63,65 +60,227 @@ class _HomeState extends State<Home> {
   }
 }
 
-
 class UInoticia2 extends StatefulWidget {
   @override
   _UInoticia2State createState() => _UInoticia2State();
 }
+
 class _UInoticia2State extends State<UInoticia2> {
+  String tema, idioma;
+  final _formkey = GlobalKey<FormState>();
+  bool bienvenida = true;
+
   @override
   Widget build(BuildContext context) {
+    hola() {
+      setState(() {
+        tema = tema;
+        idioma = idioma;
+        bienvenida = !bienvenida;
+      });
+    }
+
+    void validaryenviar() {
+      if (_formkey.currentState.validate()) {
+        _formkey.currentState.save();
+        print(tema);
+        print(idioma);
+
+        hola();
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => UInoticia2(tema: tema,idioma: idioma))
+
+      }
+    }
+
+    return bienvenida
+        ? CupertinoPageScaffold(
+            resizeToAvoidBottomInset: false,
+            navigationBar: CupertinoNavigationBar(
+              middle: Text("Súper increible app de noticias"),
+            ),
+            child: Container(
+                padding: EdgeInsets.only(top: 70, left: 20, right: 20),
+                child: Form(
+                    key: _formkey,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Ingresa un valor válido";
+                            }
+                          },
+                          onSaved: (value) {
+                            tema = value;
+                          },
+                          decoration:
+                              InputDecoration(labelText: "Ingrese un tema"),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Ingresa un valor válido";
+                            }
+                          },
+                          onSaved: (value) {
+                            idioma = value;
+                          },
+                          decoration:
+                              InputDecoration(labelText: "Ingrese el idioma"),
+                        ),
+                        SizedBox(
+                          height: 13,
+                        ),
+                        CupertinoButton(
+                          child: Text("Buscar noticias"),
+                          onPressed: validaryenviar,
+                          color: CupertinoColors.activeBlue,
+                        )
+                      ],
+                    ))),
+          )
+        : Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 470,
+                  width: MediaQuery.of(context).size.width,
+                  child: FutureBuilder(
+                    future: recuperarNoticias2(tema, idioma),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.data == null) {
+                        return Container(
+                            child: Center(child: CupertinoActivityIndicator()));
+                      } else {
+                        return ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+
+                                //trailing:   Text(snapshot.data[index].fecha),
+                                subtitle: Text(
+                                  snapshot.data[index].descripcion,
+                                  textAlign: TextAlign.justify,
+                                ),
+                                leading: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViendoNoticia22(
+                                                      url: snapshot.data[index]
+                                                          .url
+                                                          .toString(),
+                                                      titulo: snapshot
+                                                          .data[index].titulo),
+                                              fullscreenDialog: true));
+                                    },
+                                    child: FadeInImage.memoryNetwork(
+                                      placeholder: kTransparentImage,
+                                      image: snapshot.data[index].imagen,
+                                    )),
+                                title: Text(
+                                  snapshot.data[index].titulo +
+                                      "\n" +
+                                      (snapshot.data[index].fecha),
+                                  textAlign: TextAlign.justify,
+                                ));
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoButton(
+                    child: Text("Volver a buscar otro tema"),
+                    onPressed: hola,
+                    color: CupertinoColors.activeBlue,
+                  ),
+                )
+              ],
+            ),
+          );
+  }
+}
+
+/*class Bienvenida extends StatelessWidget {
+  final _formkey = GlobalKey<FormState>();
+  String tema, idioma;
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> validaryenviar() {
+      List<String> lista = [];
+      if (_formkey.currentState.validate()) {
+        _formkey.currentState.save();
+        if (tema.isNotEmpty) {
+          lista.add(tema);
+        }
+        if (idioma.isNotEmpty) {
+          lista.add(idioma);
+        }
+
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => UInoticia2(tema: tema,idioma: idioma))
+
+        print(idioma);
+
+        print(lista);
+      }
+      return lista;
+    }
+
     return CupertinoPageScaffold(
-          child: FutureBuilder(
-        future: recuperarNoticias2(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            return Container(
-                child: Center(child: CupertinoActivityIndicator()));
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                    subtitle: Text(
-                      snapshot.data[index].descripcion,
-                      textAlign: TextAlign.justify,
-                    ),
-                    leading: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViendoNoticia22(
-                                    url: snapshot.data[index].url.toString(),
-                                    titulo: snapshot.data[index].titulo),
-                                fullscreenDialog: true));
-                      },
-                      child: Image.network(
-                        snapshot.data[index].imagen,
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    title: Text(
-                      snapshot.data[index].titulo,
-                      maxLines: 2,
-                    ));
-              },
-            );
-          }
-        },
+      resizeToAvoidBottomInset: false,
+      navigationBar: CupertinoNavigationBar(
+        middle: Text("Súper increible app de noticias"),
       ),
+      child: Container(
+          padding: EdgeInsets.only(top: 70, left: 20, right: 20),
+          child: Form(
+              key: _formkey,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Ingresa un valor válido";
+                      }
+                    },
+                    onSaved: (value) {
+                      tema = value;
+                    },
+                    decoration: InputDecoration(labelText: "Ingrese un tema"),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Ingresa un valor válido";
+                      }
+                    },
+                    onSaved: (value) {
+                      idioma = value;
+                    },
+                    decoration: InputDecoration(labelText: "Ingrese el idioma"),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CupertinoButton(
+                    child: Text("Buscar noticias"),
+                    onPressed: validaryenviar,
+                    color: CupertinoColors.activeBlue,
+                  )
+                ],
+              ))),
     );
   }
-}
-
-
-class Bienvenida extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(child: Center(child: Text("Bienvenido"),),
-      
-    );
-  }
-}
+}*/

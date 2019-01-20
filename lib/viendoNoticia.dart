@@ -13,7 +13,7 @@ class ViendoNoticia22 extends StatelessWidget {
          initialChild: Center(child: CircularProgressIndicator()),
       appBar: AppBar(title: Text(titulo)),
       hidden: true,
-      withZoom: true,
+      
       scrollBar: true,
 
    
