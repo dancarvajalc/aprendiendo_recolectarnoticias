@@ -145,9 +145,10 @@ class _UInoticia2State extends State<UInoticia2> {
           )
         : Container(
             child: Column(
+           
               children: <Widget>[
                 Container(
-                  height: 470,
+                  height: 448,
                   width: MediaQuery.of(context).size.width,
                   child: FutureBuilder(
                     future: recuperarNoticias2(tema, idioma),
@@ -198,10 +199,13 @@ class _UInoticia2State extends State<UInoticia2> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  width: 200,
+                  margin: EdgeInsets.all(5),
                   child: CupertinoButton(
-                    child: Text("Volver a buscar otro tema"),
+                    child: Text("Volver"),
                     onPressed: hola,
                     color: CupertinoColors.activeBlue,
                   ),
