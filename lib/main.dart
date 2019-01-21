@@ -181,12 +181,14 @@ class _UInoticia2State extends State<UInoticia2> {
                                                           .data[index].titulo),
                                               fullscreenDialog: true));
                                     },
-                                    child: FadeInImage.memoryNetwork(
+                                    child: snapshot.data[index].imagen != null ?
+                                    FadeInImage.memoryNetwork(
                                       height: 50,
                                       width: 50,
                                       placeholder: kTransparentImage,
                                       image: snapshot.data[index].imagen,
-                                    )),
+                                    ): Container(height: 50,width: 50,),
+                                    ),
                                 title: Text(
                                   snapshot.data[index].titulo +
                                       "\n" +

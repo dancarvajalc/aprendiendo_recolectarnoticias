@@ -19,7 +19,7 @@ class Noticia2 {
 Future<List<Noticia2>> recuperarNoticias2(String tema, String idioma) async {
 
   var datos = await http.get(
-      "https://newsapi.org/v2/everything?q="+tema+"&language="+idioma+"&sortBy=popularity&apiKey=c4b8c021b0514ae695c6c1591058bbfd");
+      "https://newsapi.org/v2/everything?q="+tema+"&language="+idioma+"&sortBy=publishedAt&apiKey=c4b8c021b0514ae695c6c1591058bbfd");
 
 
 List<Noticia2> listadenoticias = [];
@@ -35,6 +35,7 @@ List<Noticia2> listadenoticias = [];
     }
    
   }
+  print(listadenoticias);
  return listadenoticias;
   //print(noticia.noticias[2].titulo);
   //print(noticia.autor);
